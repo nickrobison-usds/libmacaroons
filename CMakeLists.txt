@@ -58,7 +58,6 @@ target_link_libraries(fuzz_serializer macaroons)
 add_sanitizers(fuzz_serializer)
 
 # Installation
-include(GnuInstallDirs)
 set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/macaroons)
 install(TARGETS macaroons
         EXPORT macaroonsTarget
