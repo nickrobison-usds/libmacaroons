@@ -19,10 +19,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install libbsd-dev
-      - uses: lukka/get-cmake@v3.17.1
+      - uses: lukka/get-cmake@v3.19.2
         name: Install cmake
-      - name: Run CMake with Ninja
-        uses: lukka/run-cmake@v2
+      - name: Run CMake
+        uses: lukka/run-cmake@v3.3
         id: runcmake
         with:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
