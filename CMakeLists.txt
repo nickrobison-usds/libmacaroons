@@ -40,8 +40,14 @@ if (JSON_SUPPORT)
     add_compile_definitions(MACAROONS_JSON)
 endif ()
 
-if (APPLE)
+if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
     target_compile_definitions(macaroons PRIVATE HAVE_OSX_LIBUTIL_H)
+elseif (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    target_compile_definitions(macaroons PRIVATE HAVE_BSD_LIBUTIL_H)
+elseif (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+    target_compile_definitions(macaroons PRIVATE HAVE_LIBUTIL_H)
+else ()
+    message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()
 
 # Test
@@ -58,22 +64,22 @@ target_link_libraries(fuzz_serializer macaroons)
 add_sanitizers(fuzz_serializer)
 
 # Installation
-set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/macaroons)
-install(TARGETS macaroons
-        EXPORT macaroonsTarget
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-# Install the single header
-install(FILES macaroons.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/cmake/macaroons-version.cmake
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY AnyNewerVersion)
-
-install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/cmake/macaroons-version.cmake
-        DESTINATION ${INSTALL_CONFIGDIR})
-
-install(EXPORT macaroonsTarget DESTINATION ${INSTALL_CONFIGDIR} FILE macaroons-config.cmake)
+#set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/macaroons)
+#install(TARGETS macaroons
+#        EXPORT macaroonsTarget
+#        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+## Install the single header
+#install(FILES macaroons.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+#
+#include(CMakePackageConfigHelpers)
+#write_basic_package_version_file(
+#        ${CMAKE_CURRENT_BINARY_DIR}/cmake/macaroons-version.cmake
+#        VERSION ${PROJECT_VERSION}
+#        COMPATIBILITY AnyNewerVersion)
+#
+#install(FILES
+#        ${CMAKE_CURRENT_BINARY_DIR}/cmake/macaroons-version.cmake
+#        DESTINATION ${INSTALL_CONFIGDIR})
+#
+#install(EXPORT macaroonsTarget DESTINATION ${INSTALL_CONFIGDIR} FILE macaroons-config.cmake)
