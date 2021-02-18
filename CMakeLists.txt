@@ -56,8 +56,10 @@ target_link_libraries(verifier_test macaroons)
 
 # Build fuzzers
 if (FUZZ)
-    add_executable(fuzz_serializer fuzzer-driver_afl.c fuzzer-serializer.c)
-    target_link_libraries(fuzz_serializer macaroons)
+    message("Adding libFuzzer support")
+    add_executable(fuzz_serializer fuzzer-serializer.c)
+    target_compile_options(fuzz_serializer PRIVATE $<$<C_COMPILER_ID:Clang>:-g -O1 -fsanitize=address,fuzzer -fno-omit-frame-pointer>)
+    target_link_libraries(fuzz_serializer PRIVATE $<$<C_COMPILER_ID:Clang>:-fsanitize=fuzzer,address> macaroons)
 endif ()
 
 if (WITH_SANITIZERS)
@@ -68,7 +70,7 @@ if (WITH_SANITIZERS)
     add_sanitizers(serialize_test)
     add_sanitizers(verifier_test)
     if (FUZZ)
-        add_sanitizers(fuzz_serializer)
+#        add_sanitizers(fuzz_serializer)
     endif ()
 endif ()
 
