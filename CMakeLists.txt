@@ -74,6 +74,7 @@ endif ()
 
 # Setup unit testing
 include(FetchContent)
+set(UNITY_EXTENSION_FIXTURE ON)
 FetchContent_Declare(
         unity
         GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
