@@ -34,5 +34,4 @@ jobs:
       - name: Test
         working-directory: ./build/test/unity
         run: |
-          ls -R .
           ./unit_tests_app -v
