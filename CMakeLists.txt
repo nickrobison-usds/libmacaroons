@@ -61,8 +61,6 @@ if (FUZZ)
 endif ()
 
 if (WITH_SANITIZERS)
-    set(SANITIZE_ADDRESS ON)
-    set(SANITIZE_UNDEFINED ON)
     find_package(Sanitizers)
 
     add_sanitizers(serialize_test)

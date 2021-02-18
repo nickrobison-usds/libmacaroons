@@ -9,6 +9,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
+          - os: ubuntu-latest
+            sanitizer: "ADDRESS"
+          - os: ubuntu-latest
+            sanitizer: "MEMORY"
+          - os: macos-latest
+              sanitizer: "ADDRESS"
 
     steps:
       - uses: actions/checkout@v1
@@ -28,8 +34,8 @@ jobs:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
           useVcpkgToolchainFile: true
           buildDirectory: '${{ github.workspace }}/build/'
-          cmakeAppendedArgs: '-DWITH_SANITIZERS=ON'
+          cmakeAppendedArgs: '-DWITH_SANITIZERS=ON -DSANITIZE_${{ matrix.sanitizer }}=ON -DSANITIZE_UNDEFINED=ON'
       - name: Test
         working-directory: ./build
         run: |
-          ./unit-tests-app -v
+          ctest
