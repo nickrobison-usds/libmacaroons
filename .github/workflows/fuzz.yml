@@ -52,4 +52,5 @@ jobs:
       - name: Fuzz
         working-directory: ./build
         run: |
+          ls
           afl-fuzz -i ../corpus -o output -m none ./afl_asan_macaroons
