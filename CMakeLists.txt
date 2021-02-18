@@ -74,7 +74,7 @@ endif ()
 
 # Setup unit testing
 include(FetchContent)
-set(UNITY_EXTENSION_FIXTURE ON)
+set(UNITY_EXTENSION_FIXTURE ON CACHE BOOL "")
 FetchContent_Declare(
         unity
         GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
