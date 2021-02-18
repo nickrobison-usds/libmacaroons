@@ -28,6 +28,7 @@ jobs:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
           useVcpkgToolchainFile: true
           buildDirectory: '${{ github.workspace }}/build/'
+          cmakeAppendedArgs: '-DWITH_SANITIZERS=ON'
       - name: Test
         working-directory: ./build
         run: |

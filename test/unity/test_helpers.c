@@ -37,7 +37,7 @@ struct macaroon *deserialize_macaroon(const char *serialized) {
     unsigned char *buf = malloc(buf_sz);
     TEST_ASSERT_NOT_NULL_MESSAGE(buf, "Buffer cannot be null");
 
-//    memset(buf, 0, sizeof(*buf));
+    memset(buf, 0, sizeof(*buf));
     int rc = b64_pton(serialized, buf, buf_sz);
 
     enum macaroon_returncode err = MACAROON_SUCCESS;

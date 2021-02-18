@@ -189,14 +189,17 @@ b64_pton(src, target, targsize)
 	size_t targsize;
 {
     size_t tarindex;
-	int state, ch;
+	int state, ch, cur_idx;
 	unsigned char nextbyte;
 	char *pos;
 
 	state = 0;
 	tarindex = 0;
+	cur_idx = 0;
 
-	while ((ch = (unsigned char)*src++) != '\0') {
+
+	// Keep track of the number of characters evaluated, to avoid overflowing the valid data
+	while ((ch = (unsigned char)*src++) != '\0' && cur_idx++ < targsize) {
 		if (isspace(ch))	/* Skip whitespace anywhere. */
 			continue;
 
