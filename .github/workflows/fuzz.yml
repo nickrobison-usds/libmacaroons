@@ -48,7 +48,7 @@ jobs:
         with:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
           buildDirectory: '${{ github.workspace }}/build/'
-          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/afl-clang -DFUZZ=ON -DWITH_SANITIZERS=ON -DSANITIZE_MEMORY=ON'
+          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/afl-clang -DFUZZ=ON -DWITH_SANITIZERS=ON'
       - name: Fuzz
         working-directory: ./build
         run: |
