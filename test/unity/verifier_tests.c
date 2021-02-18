@@ -125,7 +125,7 @@ TEST(VerifierTests, caveat_v1_3) {
 
 TEST(VerifierTests, caveat_v1_4) {
     static const size_t num_caveats = 2;
-    const char *caveats[num_caveats] = {
+    const char *caveats[2] = {
             "account = 3735928559",
             "user = alice"
     };
@@ -148,7 +148,7 @@ TEST(VerifierTests, caveat_v1_4) {
 
 TEST(VerifierTests, caveat_v1_5) {
     static const size_t num_caveats = 1;
-    const char *caveats[num_caveats] = {
+    const char *caveats[1] = {
             "account = 3735928559",
     };
     const char **c = (const char**)(malloc(num_caveats * sizeof(char*)));
@@ -170,7 +170,7 @@ TEST(VerifierTests, caveat_v1_5) {
 
 TEST(VerifierTests, caveat_v1_6) {
     static const size_t num_caveats = 1;
-    const char *caveats[num_caveats] = {
+    const char *caveats[1] = {
             "user = alice",
     };
     const char **c = (const char**)(malloc(num_caveats * sizeof(char*)));
@@ -192,7 +192,7 @@ TEST(VerifierTests, caveat_v1_6) {
 
 TEST(VerifierTests, caveat_v2_1) {
     static const size_t num_caveats = 1;
-    const char *caveats[num_caveats] = {
+    const char *caveats[1] = {
             "account = 3735928559",
     };
     const char **c = (const char**)(malloc(num_caveats * sizeof(char*)));
@@ -214,7 +214,7 @@ TEST(VerifierTests, caveat_v2_1) {
 
 TEST(VerifierTests, caveat_v2_2) {
     static const size_t num_caveats = 1;
-    const char *caveats[num_caveats] = {
+    const char *caveats[1] = {
             "account = 0000000000",
     };
     const char **c = (const char**)(malloc(num_caveats * sizeof(char*)));
@@ -247,7 +247,7 @@ TEST(VerifierTests, caveat_v2_3) {
 
 TEST(VerifierTests, caveat_v2_4) {
     static const size_t num_caveats = 2;
-    const char *caveats[num_caveats] = {
+    const char *caveats[2] = {
             "account = 3735928559",
             "user = alice",
     };
@@ -270,7 +270,7 @@ TEST(VerifierTests, caveat_v2_4) {
 
 TEST(VerifierTests, caveat_v2_5) {
     static const size_t num_caveats = 1;
-    const char *caveats[num_caveats] = {
+    const char *caveats[1] = {
             "account = 3735928559",
     };
     const char **c = (const char**)(malloc(num_caveats * sizeof(char*)));
@@ -292,7 +292,7 @@ TEST(VerifierTests, caveat_v2_5) {
 
 TEST(VerifierTests, caveat_v2_6) {
     static const size_t num_caveats = 1;
-    const char *caveats[num_caveats] = {
+    const char *caveats[1] = {
             "user = alice",
     };
     const char **c = (const char**)(malloc(num_caveats * sizeof(char*)));
