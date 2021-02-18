@@ -10,7 +10,7 @@ on:
     - cron: '0 18 * * *' # Daily at 18:00 UTC
 
 jobs:
-  job:
+  libfuzzer:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -32,3 +32,24 @@ jobs:
         run: |
           ./fuzz_serializer ../corpus -max_len=1 -jobs=12 -max_total_time=60
 
+  afl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: (Linux) Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libbsd-dev clang-11 afl++
+      - uses: lukka/get-cmake@v3.19.2
+        name: Install cmake
+      - uses: lukka/run-cmake@v3.3
+        name: Run CMake
+        id: runcmake
+        with:
+          cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
+          buildDirectory: '${{ github.workspace }}/build/'
+          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/afl-clang -DFUZZ=ON -DWITH_SANITIZERS=ON -DSANITIZE_MEMORY=ON'
+      - name: Fuzz
+        working-directory: ./build
+        run: |
+          afl-fuzz -i ../corpus -o output -m none ./afl_asan_macaroons
