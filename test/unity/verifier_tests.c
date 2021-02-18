@@ -124,7 +124,7 @@ TEST(VerifierTests, caveat_v1_3) {
 }
 
 TEST(VerifierTests, caveat_v1_4) {
-    const size_t num_caveats = 2;
+    static const size_t num_caveats = 2;
     const char *caveats[num_caveats] = {
             "account = 3735928559",
             "user = alice"
@@ -147,7 +147,7 @@ TEST(VerifierTests, caveat_v1_4) {
 }
 
 TEST(VerifierTests, caveat_v1_5) {
-    const size_t num_caveats = 1;
+    static const size_t num_caveats = 1;
     const char *caveats[num_caveats] = {
             "account = 3735928559",
     };
@@ -169,7 +169,7 @@ TEST(VerifierTests, caveat_v1_5) {
 }
 
 TEST(VerifierTests, caveat_v1_6) {
-    const size_t num_caveats = 1;
+    static const size_t num_caveats = 1;
     const char *caveats[num_caveats] = {
             "user = alice",
     };
@@ -191,7 +191,7 @@ TEST(VerifierTests, caveat_v1_6) {
 }
 
 TEST(VerifierTests, caveat_v2_1) {
-    const size_t num_caveats = 1;
+    static const size_t num_caveats = 1;
     const char *caveats[num_caveats] = {
             "account = 3735928559",
     };
@@ -213,7 +213,7 @@ TEST(VerifierTests, caveat_v2_1) {
 }
 
 TEST(VerifierTests, caveat_v2_2) {
-    const size_t num_caveats = 1;
+    static const size_t num_caveats = 1;
     const char *caveats[num_caveats] = {
             "account = 0000000000",
     };
@@ -246,7 +246,7 @@ TEST(VerifierTests, caveat_v2_3) {
 }
 
 TEST(VerifierTests, caveat_v2_4) {
-    const size_t num_caveats = 2;
+    static const size_t num_caveats = 2;
     const char *caveats[num_caveats] = {
             "account = 3735928559",
             "user = alice",
@@ -269,7 +269,7 @@ TEST(VerifierTests, caveat_v2_4) {
 }
 
 TEST(VerifierTests, caveat_v2_5) {
-    const size_t num_caveats = 1;
+    static const size_t num_caveats = 1;
     const char *caveats[num_caveats] = {
             "account = 3735928559",
     };
@@ -291,7 +291,7 @@ TEST(VerifierTests, caveat_v2_5) {
 }
 
 TEST(VerifierTests, caveat_v2_6) {
-    const size_t num_caveats = 1;
+    static const size_t num_caveats = 1;
     const char *caveats[num_caveats] = {
             "user = alice",
     };
