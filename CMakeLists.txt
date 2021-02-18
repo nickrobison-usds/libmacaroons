@@ -65,19 +65,16 @@ if (FUZZ)
 
     message("Building AFL target")
     add_executable(afl_asan_macaroons fuzzer-driver_afl.c fuzzer-serializer.c)
-    target_link_libraries(afl_asan_macaroons macaroons)
+    target_compile_options(afl_asan_macaroons PRIVATE $<$<C_COMPILER_ID:Clang>:-fsanitize=address>)
+    target_link_libraries(afl_asan_macaroons PRIVATE $<$<C_COMPILER_ID:Clang>:-fsanitize=address> macaroons)
 endif ()
 
 if (WITH_SANITIZERS)
-    set(SANITIZE_ADDRESS ON)
     set(SANITIZE_UNDEFINED ON)
     find_package(Sanitizers)
 
     add_sanitizers(serialize_test)
     add_sanitizers(verifier_test)
-    if (FUZZ)
-        add_sanitizers(afl_asan_macaroons)
-    endif ()
 endif ()
 
 # Setup unit testing

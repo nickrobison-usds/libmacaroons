@@ -30,7 +30,7 @@ jobs:
       - name: Fuzz
         working-directory: ./build
         run: |
-          ./fuzz_serializer ../corpus -max_len=1 -jobs=12 -max_total_time=60
+          ./fuzz_serializer ../corpus -max_len=1 -jobs=1 -max_total_time=60
 
   afl:
     runs-on: ubuntu-latest
@@ -48,9 +48,10 @@ jobs:
         with:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
           buildDirectory: '${{ github.workspace }}/build/'
-          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/afl-clang -DFUZZ=ON -DWITH_SANITIZERS=ON'
+          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/afl-clang -DFUZZ=ON'
+        env:
+          AFL_CC: /usr/bin/clang-11
       - name: Fuzz
         working-directory: ./build
         run: |
-          ls
           afl-fuzz -i ../corpus -o output -m none ./afl_asan_macaroons
