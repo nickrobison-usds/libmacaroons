@@ -30,6 +30,6 @@ jobs:
           buildDirectory: '${{ github.workspace }}/build/'
           cmakeAppendedArgs: '-DWITH_SANITIZERS=ON'
       - name: Test
-        working-directory: ./build
+        working-directory: ./build/test/unity
         run: |
-          ctest
+          ./unit-tests-app -v
