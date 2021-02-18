@@ -9,6 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
+        include:
           - os: ubuntu-latest
             sanitizer: "ADDRESS"
           - os: ubuntu-latest
