@@ -26,7 +26,7 @@ jobs:
         with:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
           buildDirectory: '${{ github.workspace }}/build/'
-          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/clang-11 -DFUZZ=ON'
+          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/clang-11 -DFUZZ_LIBFUZZER=ON'
       - name: Fuzz
         working-directory: ./build
         run: |
@@ -48,7 +48,7 @@ jobs:
         with:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
           buildDirectory: '${{ github.workspace }}/build/'
-          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/afl-clang-fast -DFUZZ=ON'
+          cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/afl-clang-fast -DFUZZ_AFL=ON'
         env:
           LLVM_CONFIG: llvm-config-11
       - name: Fuzz
