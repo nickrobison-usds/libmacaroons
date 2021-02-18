@@ -81,7 +81,7 @@ void verify_macaroon(const struct verifier_test *test) {
     (macaroons)[macaroons_sz - 1] = M;
 
     // Ok, now let's verify it
-    const size_t key_sz = strlen(test->key);
+    const size_t key_sz = strlen((const char*)test->key);
     enum macaroon_returncode err;
     int verify = macaroon_verify(V, macaroons[0], test->key, key_sz, macaroons + 1, macaroons_sz - 1, &err);
 
