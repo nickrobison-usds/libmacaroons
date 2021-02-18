@@ -58,3 +58,4 @@ jobs:
         working-directory: ./build
         run: |
           afl-fuzz -i ../corpus -o output -m none ./afl_asan_macaroons
+        timeout-minutes: 1
