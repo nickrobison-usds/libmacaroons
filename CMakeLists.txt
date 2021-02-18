@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.14)
 project(libmacaroons
         VERSION 0.4
         LANGUAGES C)
@@ -23,8 +23,7 @@ add_library(macaroons
         tweetnacl.c
         v1.c
         v2.c
-        varint.c
-        utf8check.h)
+        varint.c)
 
 target_include_directories(macaroons
         INTERFACE
@@ -33,7 +32,7 @@ target_include_directories(macaroons
 
 if (JSON_SUPPORT)
     message(STATUS "Enabling JSON support")
-    add_compile_definitions(MACAROONS_JSON)
+    target_compile_definitions(macaroons PRIVATE MACAROONS_JSON)
 endif ()
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
@@ -73,6 +72,16 @@ if (WITH_SANITIZERS)
     endif ()
 endif ()
 
+# Setup unit testing
+include(FetchContent)
+FetchContent_Declare(
+        unity
+        GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
+)
+FetchContent_MakeAvailable(unity)
+
+include(CTest)
+add_subdirectory(test/unity)
 
 # Installation
 #set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/macaroons)

@@ -29,6 +29,6 @@ jobs:
           useVcpkgToolchainFile: true
           buildDirectory: '${{ github.workspace }}/build/'
       - name: Test
-        working-directory: ./test/unit
+        working-directory: ./build
         run: |
-          ./test.sh
+          ctest
