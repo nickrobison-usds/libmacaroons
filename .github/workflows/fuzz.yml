@@ -51,6 +51,7 @@ jobs:
           cmakeAppendedArgs: '-DCMAKE_C_COMPILER=/usr/bin/afl-clang-fast -DFUZZ_AFL=ON'
         env:
           LLVM_CONFIG: llvm-config-11
+          AFL_CC: /usr/bin/clang-11
       - name: Set core reporting
         run: |
           sudo bash -c 'echo core >/proc/sys/kernel/core_pattern'
