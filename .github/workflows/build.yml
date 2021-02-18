@@ -23,7 +23,7 @@ jobs:
           sudo apt-get install libbsd-dev
       - uses: lukka/get-cmake@v3.19.2
         name: Install cmake
-      - name: Run CMake with ${{ matrix.sanitizer }}
+      - name: Run CMake with ${{ matrix.sanitizer }} Sanitizer
         uses: lukka/run-cmake@v3.3
         id: runcmake
         with:
@@ -32,7 +32,7 @@ jobs:
           buildDirectory: '${{ github.workspace }}/build/'
           cmakeAppendedArgs: '-DWITH_SANITIZERS=ON -DSANITIZE_${{ matrix.sanitizer }}=ON -DSANITIZE_UNDEFINED=ON'
       - name: Test
-        working-directory: ./build
+        working-directory: ./build/test/unity
         run: |
           ls -R .
-          ctest
+          ./unit_tests_app -v
