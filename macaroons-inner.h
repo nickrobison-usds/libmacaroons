@@ -31,14 +31,7 @@
 
 /* macaroons */
 #include "slice.h"
-
-#ifdef PARANOID_MACAROONS
-#define VALIDATE(M) assert(macaroon_validate(M) == 0);
-#else
-#define VALIDATE(M) do {} while (0)
-#endif
-
-#define MACAROON_API __attribute__ ((visibility ("default")))
+#include "macros.h"
 
 struct caveat
 {

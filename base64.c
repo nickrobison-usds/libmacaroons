@@ -195,8 +195,9 @@ b64_pton(src, target, targsize)
 
 	state = 0;
 	tarindex = 0;
+	size_t cur_idx = 0;
 
-	while ((ch = (unsigned char)*src++) != '\0') {
+	while ((ch = (unsigned char)*src++) != '\0' && cur_idx++ < targsize) {
 		if (isspace(ch))	/* Skip whitespace anywhere. */
 			continue;
 

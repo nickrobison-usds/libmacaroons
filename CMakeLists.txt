@@ -23,7 +23,7 @@ add_library(macaroons
         tweetnacl.c
         v1.c
         v2.c
-        varint.c)
+        varint.c "macros.h")
 
 target_include_directories(macaroons
         INTERFACE
@@ -42,8 +42,8 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Linux")
     set_target_properties(macaroons PROPERTIES COMPILE_FLAGS "-msse4.1")
 elseif (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
     target_compile_definitions(macaroons PRIVATE HAVE_LIBUTIL_H)
-else ()
-    message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
+#else ()
+#    message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()
 
 # Test

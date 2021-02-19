@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <limits.h>
 
 /* macaroons */
 #include <libmacaroons/macaroons.h>
@@ -14,14 +15,8 @@
 
 size_t
 int2size_t(int val) {
-    return (val < 0) ? __SIZE_MAX__ : (size_t) ((unsigned) val);
+    return (val < 0) ? SIZE_MAX : (size_t) ((unsigned) val);
 }
-
-struct parsed_macaroon {
-    unsigned char *B;
-    struct macaroon *M;
-    enum macaroon_format F;
-};
 
 struct verifier_test {
     int version;
@@ -39,6 +34,9 @@ struct macaroon *deserialize_macaroon(const char *serialized) {
 
 //    memset(buf, 0, sizeof(*buf));
     int rc = b64_pton(serialized, buf, buf_sz);
+    if (rc < 0) {
+        TEST_FAIL_MESSAGE("Unable to decode Base64 data");
+    }
 
     enum macaroon_returncode err = MACAROON_SUCCESS;
     struct macaroon *M = macaroon_deserialize(buf, int2size_t(rc), &err);

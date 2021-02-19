@@ -44,8 +44,6 @@
 #include <bsd/libutil.h>
 #elif defined HAVE_OSX_LIBUTIL_H
 #include <util.h>
-#else
-#error portability problem
 #endif
 
 /* macaroons */

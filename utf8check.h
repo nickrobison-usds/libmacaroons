@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <x86intrin.h>
+#include <immintrin.h>
 /*
  * legal utf-8 byte sequence
  * http://www.unicode.org/versions/Unicode6.0.0/ch03.pdf - page 94

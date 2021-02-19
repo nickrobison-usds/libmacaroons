@@ -7,8 +7,10 @@
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 #include <string.h>
+#include "macros.h"
 
-__attribute__((weak)) void
+
+WEAK void
 __explicit_bzero_hook(void *buf, size_t len)
 {
 }
