@@ -380,6 +380,8 @@ macaroon_add_third_party_caveat_raw(const struct macaroon* N,
     macaroon_randombytes(enc_nonce, sizeof(enc_nonce));
     macaroon_memzero(enc_plaintext, sizeof(enc_plaintext));
     macaroon_memzero(enc_ciphertext, sizeof(enc_ciphertext));
+    printf("Nonce:\n");
+    printf(enc_nonce);
 
     /* now encrypt the key to give us vid */
     memmove(enc_plaintext + MACAROON_SECRET_TEXT_ZERO_BYTES, key,

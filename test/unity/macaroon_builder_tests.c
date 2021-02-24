@@ -126,10 +126,7 @@ TEST(MacaroonBuilderTests, add_third_party_caveat_encoded) {
     macaroon_verifier_satisfy_exact(V, predicate, strlen(predicate), &err);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
 
-    struct macaroon** discharges = malloc(sizeof(struct macaroon*) * 1);
-    discharges[0] = DP;
-
-    macaroon_verify(V, M3, secret, strlen(secret), discharges, 1, &err);
+    macaroon_verify(V, M3, secret, strlen(secret), &DP, 1, &err);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
 
     macaroon_verify(V, M3, secret, strlen(secret), NULL, 0, &err);
