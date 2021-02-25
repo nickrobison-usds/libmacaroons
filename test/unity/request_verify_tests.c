@@ -7,16 +7,6 @@
 #include <stdbool.h>
 #include <time.h>
 
-#ifdef HAVE_LIBUTIL_H
-#include <libutil.h>
-#elif defined HAVE_BSD_LIBUTIL_H
-#include <bsd/libutil.h>
-#elif defined HAVE_OSX_LIBUTIL_H
-#include <util.h>
-#else
-#error portability problem
-#endif
-
 /* macaroons */
 #include <libmacaroons/macaroons.h>
 #include <libmacaroons/port.h>
@@ -54,17 +44,23 @@ int verify_timestamp(const char* pred) {
     const char* pre = "time";
 
     if (prefix(pre, pred)) {
-        const time_t cav_time = mk_time("2025-01-01T00:00");
+        // Trim off the start
+        char* timestamp = malloc(sizeof(char*) * 16);
+        strncpy(timestamp, &pred[7], 16);
+        const time_t cav_time = mk_time(timestamp);
         const time_t now = time(0);
-        return difftime(now, cav_time) < 0. ? 0: -1;
+        const double t = difftime(cav_time, now);
+        return t < 0. ? 0 : -1;
     }
 
     return -1;
 }
 
 int general_cb(void* f, const unsigned char* pred, size_t pred_sz) {
-    char* to_verify = malloc(sizeof(char*) * pred_sz);
-    strlcpy(to_verify, pred, pred_sz + 1);
+    char* to_verify = malloc((sizeof(char*) * pred_sz));
+
+    strncpy(to_verify, pred, pred_sz);
+    to_verify[pred_sz] = '\0';
     return ((int(*)(const unsigned char*))f)(to_verify);
 }
 
