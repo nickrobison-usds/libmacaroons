@@ -10,8 +10,9 @@ get_target_property(MACAROON_INCLUDES macaroons INCLUDE_DIRECTORIES)
 configure_file(${SETUP_PY_IN} ${SETUP_PY})
 
 add_custom_command(OUTPUT ${OUTPUT}
-        COMMAND ${Python3_EXECUTABLE} ${SETUP_PY} build
+        COMMAND ${Python3_EXECUTABLE} ${SETUP_PY} build_ext --inplace
         COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}
         DEPENDS ${DEPS} macaroons)
 
 add_custom_target(python ALL DEPENDS ${OUTPUT})
+install(CODE "execute_process(COMMAND ${Python3_EXECUTABLE} ${SETUP_PY} install)")

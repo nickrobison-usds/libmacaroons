@@ -119,7 +119,7 @@ contents of the secret.  Anyone in possession of the macaroon can see the public
 portion:
 
     >>> M.identifier
-    'we used our secret key'
+    b'we used our secret key'
 
 This public portion, known as the macaroon's identifier, can be anything that
 enables us to remember our secret.  In this example, we know that the string 'we
@@ -145,21 +145,21 @@ signature should be assumed to possess the macaroon itself.
 Both of these pieces of information are publicly accessible:
 
     >>> M.location
-    'http://mybank/'
+    b'http://mybank/'
     >>> M.signature
-    'e3d9e02908526c4c0039ae15114115d97fdd68bf2ba379b342aaf0f617d0552f'
+    b'e3d9e02908526c4c0039ae15114115d97fdd68bf2ba379b342aaf0f617d0552f'
 
 We can share this macaroon with others by serializing it.  The serialized form
 is pure-ASCII, and is safe for inclusion in secure email, a standard HTTPS
 cookie, or a URL.   We can get the serialized form with:
 
     >>> M.serialize(format=1)
-    'MDAxY2xvY2F0aW9uIGh0dHA6Ly9teWJhbmsvCjAwMjZpZGVudGlmaWVyIHdlIHVzZWQgb3VyIHNlY3JldCBrZXkKMDAyZnNpZ25hdHVyZSDj2eApCFJsTAA5rhURQRXZf91ovyujebNCqvD2F9BVLwo'
+    b'MDAxY2xvY2F0aW9uIGh0dHA6Ly9teWJhbmsvCjAwMjZpZGVudGlmaWVyIHdlIHVzZWQgb3VyIHNlY3JldCBrZXkKMDAyZnNpZ25hdHVyZSDj2eApCFJsTAA5rhURQRXZf91ovyujebNCqvD2F9BVLwo'
 
 Of course, this serialized form can be displayed in a more human-readable form
 for easy debugging:
 
-    >>> print M.inspect()
+    >>> print(M.inspect().decode("utf-8"))
     location http://mybank/
     identifier we used our secret key
     signature e3d9e02908526c4c0039ae15114115d97fdd68bf2ba379b342aaf0f617d0552f
@@ -181,7 +181,7 @@ and incorporates the new caveat we've just added.  An entity in possession of
 this new macaroon cannot simply remove our new caveat to construct the old
 macaroon:
 
-    >>> print M.inspect()
+    >>> print(M.inspect().decode("utf-8"))
     location http://mybank/
     identifier we used our secret key
     cid account = 3735928559
@@ -192,10 +192,10 @@ change with each of them.
 
     >>> M = M.add_first_party_caveat('time < 2020-01-01T00:00')
     >>> M.signature
-    'b5f06c8c8ef92f6c82c6ff282cd1f8bd1849301d09a2db634ba182536a611c49'
+    b'b5f06c8c8ef92f6c82c6ff282cd1f8bd1849301d09a2db634ba182536a611c49'
     >>> M = M.add_first_party_caveat('email = alice@example.org')
     >>> M.signature
-    'ddf553e46083e55b8d71ab822be3d8fcf21d6bf19c40d617bb9fb438934474b6'
+    b'ddf553e46083e55b8d71ab822be3d8fcf21d6bf19c40d617bb9fb438934474b6'
     >>> print M.inspect()
     location http://mybank/
     identifier we used our secret key
@@ -390,22 +390,22 @@ The verifier we've built will reject all of these scenarios:
     >>> N = M.add_first_party_caveat('OS = Windows XP')
     >>> V.verify(N, secret)
     Traceback (most recent call last):
-    Unauthorized: macaroon not authorized
+    macaroons.Unauthorized: macaroon not authorized
 
     >>> # False caveat
     >>> N = M.add_first_party_caveat('time < 2014-01-01T00:00')
     >>> V.verify(N, secret)
     Traceback (most recent call last):
-    Unauthorized: macaroon not authorized
+    macaroons.Unauthorized: macaroon not authorized
 
     >>> # Bad secret
     >>> V.verify(M, 'this is not the secret we were looking for')
     Traceback (most recent call last):
-    Unauthorized: macaroon not authorized
+    macaroons.Unauthorized: macaroon not authorized
 
     >>> # Incompetent hackers trying to change the signature
     >>> N = macaroons.deserialize('MDAxY2xvY2F0aW9uIGh0dHA6Ly9teWJhbmsvCjAwMjZpZGVudGlmaWVyIHdlIHVzZWQgb3VyIHNl\nY3JldCBrZXkKMDAxZGNpZCBhY2NvdW50ID0gMzczNTkyODU1OQowMDIwY2lkIHRpbWUgPCAyMDIw\nLTAxLTAxVDAwOjAwCjAwMjJjaWQgZW1haWwgPSBhbGljZUBleGFtcGxlLm9yZwowMDJmc2lnbmF0\ndXJlID8f19FL+bkC9p/aoMmIecC7GxdOcLVyUnrv6lJMM7NSCg==\n')
-    >>> print N.inspect()
+    >>> print(N.inspect().decode("utf-8"))
     location http://mybank/
     identifier we used our secret key
     cid account = 3735928559
@@ -416,7 +416,7 @@ The verifier we've built will reject all of these scenarios:
     False
     >>> V.verify(N, secret)
     Traceback (most recent call last):
-    Unauthorized: macaroon not authorized
+    macaroons.Unauthorized: macaroon not authorized
 
 Using Third-Party Caveats
 -------------------------
@@ -443,7 +443,7 @@ limited to Alice's bank account.
     >>> location = 'http://mybank/'
     >>> M = macaroons.create(location, secret, public)
     >>> M = M.add_first_party_caveat('account = 3735928559')
-    >>> print M.inspect()
+    >>> print(M.inspect().decode("utf-8"))
     location http://mybank/
     identifier we used our other secret key
     cid account = 3735928559
@@ -474,7 +474,7 @@ Here's what this looks like in code:
     >>> # identifier = recv_from_auth()
     >>> identifier = 'this was how we remind auth of key/pred'
     >>> M = M.add_third_party_caveat('http://auth.mybank/', caveat_key, identifier)
-    >>> print M.inspect()
+    >>> print(M.inspect().decode("utf-8"))
     location http://mybank/
     identifier we used our other secret key
     cid account = 3735928559
@@ -498,7 +498,7 @@ initial root macaroon, Alice.  Alice looks at the macaroon for the list of third
 party caveat (location, identifier) pairs that must be addressed.
 
     >>> M.third_party_caveats()
-    [('http://auth.mybank/', 'this was how we remind auth of key/pred')]
+    [(b'http://auth.mybank/', b'this was how we remind auth of key/pred')]
 
 In a real application, we'd look at these third party caveats, and contact each
 location to retrieve the requisite discharge macaroons.  We would include the
@@ -508,7 +508,7 @@ and return a new macaroon that discharges the caveat:
 
     >>> D = macaroons.create('http://auth.mybank/', caveat_key, identifier)
     >>> D = D.add_first_party_caveat('time < 2020-01-01T00:00')
-    >>> print D.inspect()
+    >>> print(D.inspect().decode("utf-8"))
     location http://auth.mybank/
     identifier this was how we remind auth of key/pred
     cid time < 2020-01-01T00:00
@@ -535,9 +535,9 @@ If we were to look at the signatures on these prepared discharge macaroons, we
 would see that the binding process has irreversibly altered their signature(s).
 
     >>> D.signature
-    '2ed1049876e9d5840950274b579b0770317df54d338d9d3039c7c67d0d91d63c'
+    b'2ed1049876e9d5840950274b579b0770317df54d338d9d3039c7c67d0d91d63c'
     >>> DP.signature
-    'd115ef1c133b1126978d5ab27f69d99ba9d0468cd6c1b7e47b8c1c59019cb019'
+    b'd115ef1c133b1126978d5ab27f69d99ba9d0468cd6c1b7e47b8c1c59019cb019'
 
 The root macaroon ``M'' and its discharge macaroons ``MS'' are ready for the
 request.  Alice can serialize them all and send them to the bank to prove she is
@@ -552,7 +552,7 @@ Without the ``prepare_for_request'' call, the verification would fail:
 
     >>> V.verify(M, secret, [D])
     Traceback (most recent call last):
-    Unauthorized: macaroon not authorized
+    macaroons.Unauthorized: macaroon not authorized
 
 Choosing Secrets
 ----------------
@@ -576,7 +576,7 @@ To generate a suitable key is very simple using the python standard library:
    >>> import os
    >>> import binascii
    >>> binascii.hexlify(os.urandom(macaroons.SUGGESTED_SECRET_LENGTH)) # doctest: +ELLIPSIS
-   '...'
+   b'...'
    
 Which gives a long string of hex bytes which can be passed into the create and
 validate functions as-is.
