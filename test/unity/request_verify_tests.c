@@ -7,6 +7,16 @@
 #include <stdbool.h>
 #include <time.h>
 
+#ifdef HAVE_LIBUTIL_H
+#include <libutil.h>
+#elif defined HAVE_BSD_LIBUTIL_H
+#include <bsd/libutil.h>
+#elif defined HAVE_OSX_LIBUTIL_H
+#include <util.h>
+#else
+#error portability problem
+#endif
+
 /* macaroons */
 #include <libmacaroons/macaroons.h>
 #include <libmacaroons/port.h>
