@@ -6,13 +6,17 @@ platform:
   arch: arm64
 
 steps:
+  - name: submodules
+    image: alpine/git
+    commands:
+      - git submodule update --init --recursive --remote
   - name: build
     image: gcc:10
     commands:
+      - apt-get update && apt-get install -y libbsd-dev
       - wget -q https://github.com/Kitware/CMake/releases/download/v3.19.6/cmake-3.19.6-Linux-aarch64.tar.gz -O cmake.tar.gz
       - mkdir cmake-bin
       - tar xvf cmake.tar.gz --strip 1 -C cmake-bin
-      - ls -R .
       - export PATH=`pwd`/cmake-bin/bin:$PATH
       - cmake -B build/
       - cd build && make -j3 && ctest
