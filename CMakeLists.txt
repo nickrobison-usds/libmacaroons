@@ -9,6 +9,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 option(JSON_SUPPORT "Enable support for JSON Macaroons" ON)
 option(FUZZ "Build Fuzzing Executable" OFF)
 option(WITH_SANITIZERS "Build with sanitizers" OFF)
+option(PYTHON "Build Python bindings" OFF)
 
 add_library(macaroons
         base64.c
@@ -90,6 +91,10 @@ FetchContent_MakeAvailable(unity)
 
 include(CTest)
 add_subdirectory(test/unity)
+
+if (PYTHON)
+    add_subdirectory(bindings/python)
+endif ()
 
 # Installation
 #set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/macaroons)

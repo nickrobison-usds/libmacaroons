@@ -1,0 +1,16 @@
+from setuptools import setup, Extension
+from Cython.Build import cythonize
+
+macaroons_ext = Extension("macaroons",
+sources=["${CMAKE_CURRENT_SOURCE_DIR}/macaroons.pyx"],
+include_dirs=["${CMAKE_SOURCE_DIR}"],
+library_dirs=["${CMAKE_BINARY_DIR}"],
+libraries=["macaroons"])
+
+setup(
+    name="macaroons",
+    version="${PACKAGE_VERSION}",
+    ext_modules=cythonize([macaroons_ext], language_level = "3"),
+    zip_safe=False
+)
+

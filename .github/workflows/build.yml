@@ -2,7 +2,7 @@ name: Build and Test
 on: [pull_request]
 
 jobs:
-  job:
+  build:
     name: ${{ matrix.os }}-libmacaroons-build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -19,6 +19,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install libbsd-dev
+      - name: Install Cython
+        run: |
+          pip3 install cython --user
       - uses: lukka/get-cmake@v3.19.2
         name: Install cmake
       - name: Run CMake
@@ -27,7 +30,13 @@ jobs:
         with:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
           buildDirectory: '${{ github.workspace }}/build/'
+          cmakeAppendedArgs: "-DPYTHON=ON"
       - name: Test
         working-directory: ./build
         run: |
           ctest
+      - name: Test README
+        working-directory: ./build
+        run: |
+          make install
+          python3 -m doctest "../README"
