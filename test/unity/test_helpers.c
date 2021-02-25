@@ -8,8 +8,8 @@
 #include <stdbool.h>
 
 /* macaroons */
-#include <libmacaroons/macaroons.h>
-#include <libmacaroons/base64.h>
+#include <macaroons.h>
+#include <base64.h>
 #include <unity.h>
 
 size_t

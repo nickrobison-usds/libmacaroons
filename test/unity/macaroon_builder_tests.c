@@ -6,7 +6,7 @@
 #include <string.h>
 
 /* macaroons */
-#include <libmacaroons/macaroons.h>
+#include <macaroons.h>
 
 /* unity */
 #include "unity.h"
