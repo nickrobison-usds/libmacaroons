@@ -5,6 +5,10 @@ platform:
   os: linux
   arch: arm64
 
+trigger:
+  event:
+    - pull_request
+
 steps:
   - name: submodules
     image: alpine/git
@@ -19,4 +23,6 @@ steps:
       - tar xvf cmake.tar.gz --strip 1 -C cmake-bin
       - export PATH=`pwd`/cmake-bin/bin:$PATH
       - cmake -B build/
-      - cd build && make -j3 && ctest
+      - cd build
+      - make -j3
+      - ctest

@@ -9,7 +9,7 @@
 #include <string.h>
 
 /* macaroons */
-#include "libmacaroons/varint.h"
+#include "varint.h"
 
 /* unity */
 #include "unity.h"

@@ -8,8 +8,8 @@
 #include <time.h>
 
 /* macaroons */
-#include <libmacaroons/macaroons.h>
-#include <libmacaroons/port.h>
+#include <macaroons.h>
+#include <port.h>
 
 /* unity */
 #include "unity.h"
