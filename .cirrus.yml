@@ -1,0 +1,13 @@
+freebsd_instance:
+  image_family: freebsd-12-2
+
+freebsd_task:
+  pkg_install_script: pkg install -y cmake git
+  submodules_script:
+    - git submodule init
+    - git submodule update
+  configure_script: cmake -B build
+  build_script:
+    - cd build
+    - make -j2
+    - ctest
