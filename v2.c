@@ -32,12 +32,14 @@
 #include <stdint.h>
 #include <string.h>
 
+/* utf8 */
+#include <utf8/utf8.h>
+
 /* macaroons */
 #include "v2.h"
 #include "base64.h"
 #include "constants.h"
 #include "varint.h"
-#include "utf8check.h"
 
 #define TYPE_LOCATION 1
 #define TYPE_IDENTIFIER 2
@@ -381,7 +383,7 @@ json_required_field_size(int encoding, const struct slice* f)
     {
         case ENC_STR:
             // Check if valid UTF-8
-            if(validate_utf8_fast((const char *) f->data, f->size)) {
+            if(validate_utf8(f->data, f->size)) {
                 return 6 + JSON_MAX_FIELD_SIZE + f->size;
             }
         case ENC_B64:
@@ -485,7 +487,7 @@ json_emit_required_field(int comma, int encoding, uint8_t _type,
                          unsigned char* const end)
 {
     // If invalid UTF-8 string, then we need to encode it.
-    if (encoding == ENC_STR && !validate_utf8_fast((const char*)f->data, f->size)) {
+    if (encoding == ENC_STR && !validate_utf8(f->data, f->size)) {
         encoding = ENC_B64;
     }
 
