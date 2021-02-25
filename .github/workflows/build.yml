@@ -35,3 +35,8 @@ jobs:
         working-directory: ./build
         run: |
           ctest
+      - name: Test README
+        working-directory: ./build
+        run: |
+          make install
+          python3 -m doctest "../README"
