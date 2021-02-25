@@ -9,6 +9,6 @@ steps:
   - name: build
     image: gcc:10
     commands:
-      - sudo apt-get install cmake
+      - apt-get install cmake
       - cmake -B build/
       - cd build && make -j3 && ctest
