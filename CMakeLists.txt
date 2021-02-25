@@ -91,6 +91,8 @@ FetchContent_MakeAvailable(unity)
 include(CTest)
 add_subdirectory(test/unity)
 
+add_subdirectory(bindings/python)
+
 # Installation
 #set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/macaroons)
 #install(TARGETS macaroons
