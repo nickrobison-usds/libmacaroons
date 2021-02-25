@@ -1,0 +1,3 @@
+[submodule "external/utf8"]
+	path = external/utf8/vendor
+	url = ../../cyb70289/utf8.git
