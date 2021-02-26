@@ -37,8 +37,10 @@ struct macaroon *deserialize_macaroon(const char *serialized) {
     unsigned char *buf = malloc(buf_sz);
     TEST_ASSERT_NOT_NULL_MESSAGE(buf, "Buffer cannot be null");
 
-//    memset(buf, 0, sizeof(*buf));
     int rc = b64_pton(serialized, buf, buf_sz);
+    if (rc < 0) {
+        TEST_FAIL_MESSAGE("Unable to decode Base64 data");
+    }
 
     enum macaroon_returncode err = MACAROON_SUCCESS;
     struct macaroon *M = macaroon_deserialize(buf, int2size_t(rc), &err);
