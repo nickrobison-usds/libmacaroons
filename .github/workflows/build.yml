@@ -27,7 +27,6 @@ jobs:
         with:
           cmakeListsOrSettingsJson: "CMakeListsTxtAdvanced"
           buildDirectory: '${{ github.workspace }}/build/'
-          buildWithCMakeArgs: '-- -v'
       - name: Test
         working-directory: ./build
         run: |
