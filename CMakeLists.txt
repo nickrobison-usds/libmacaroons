@@ -6,6 +6,15 @@ project(libmacaroons
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
+# Enable Spectre mitigations on Windows
+if (MSVC AND (MSVC_VERSION GREATER 1900))
+    message("Setting CONTROL FLOW GUARD") 
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /guard:cf")
+    SET(CMAKE_EXE_LINKER_FLAGS  "/guard:cf /DYNAMICBASE")
+    message("Setting QSPECTRE")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Qspectre")
+endif()
+
 option(JSON_SUPPORT "Enable support for JSON Macaroons" ON)
 option(FUZZ "Build Fuzzing Executable" OFF)
 option(WITH_SANITIZERS "Build with sanitizers" OFF)
