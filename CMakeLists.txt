@@ -67,13 +67,14 @@ endif ()
 target_link_libraries(macaroons PRIVATE ${MACAROON_TARGETS})
 
 # Test
-add_executable(serialize_test macaroon-test-serialization.c)
-target_link_libraries(serialize_test macaroons)
-
-
-add_executable(verifier_test macaroon-test-verifier.c)
-target_link_libraries(verifier_test macaroons)
-
+if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
+    add_executable(serialize_test macaroon-test-serialization.c)
+    target_link_libraries(serialize_test macaroons)
+    add_executable(verifier_test macaroon-test-verifier.c)
+    target_link_libraries(verifier_test macaroons)
+else ()
+    message(WARNING "Old tests do not build on Windows")
+endif ()
 # Build fuzzers
 if (FUZZ_AFL)
     message("Building AFL target")
