@@ -25,7 +25,9 @@ add_library(macaroons
         tweetnacl.c
         v1.c
         v2.c
-        varint.c "macros.h" "shim_windows.c")
+        varint.c
+        macros.h
+        shim_windows.c)
 
 target_include_directories(macaroons
         INTERFACE
