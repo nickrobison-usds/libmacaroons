@@ -32,6 +32,7 @@
 
 /* macaroons */
 #include "constants.h"
+#include "macros.h"
 #include "packet.h"
 #include "v1.h"
 

@@ -25,7 +25,7 @@ add_library(macaroons
         tweetnacl.c
         v1.c
         v2.c
-        varint.c)
+        varint.c "macros.h" "shim_windows.c")
 
 target_include_directories(macaroons
         INTERFACE
@@ -46,6 +46,9 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Linux")
     list(APPEND MACAROON_TARGETS bsd)
 elseif (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
     target_compile_definitions(macaroons PRIVATE HAVE_LIBUTIL_H)
+elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    target_compile_definitions(macaroons PRIVATE HAVE_WINDOWS_SHIM)
+    list(APPEND MACAROON_TARGETS bcrypt)
 else ()
     message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()

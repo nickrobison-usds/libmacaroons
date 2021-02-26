@@ -14,7 +14,7 @@
 
 size_t
 int2size_t(int val) {
-    return (val < 0) ? __SIZE_MAX__ : (size_t) ((unsigned) val);
+    return (val < 0) ? SIZE_MAX : (size_t) ((unsigned) val);
 }
 
 struct parsed_macaroon {

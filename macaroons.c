@@ -44,6 +44,7 @@
 #include <bsd/libutil.h>
 #elif defined HAVE_OSX_LIBUTIL_H
 #include <util.h>
+#elif defined HAVE_WINDOWS_SHIM
 #else
 #error portability problem
 #endif
@@ -53,6 +54,7 @@
 #include "constants.h"
 #include "macaroons.h"
 #include "macaroons-inner.h"
+#include "macros.h"
 #include "port.h"
 #include "slice.h"
 #include "v1.h"
