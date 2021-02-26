@@ -25,4 +25,4 @@ steps:
       - cmake -B build/
       - cd build
       - make -j3
-      - ctest
+      - ctest --verbose
