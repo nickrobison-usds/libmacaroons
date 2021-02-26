@@ -91,6 +91,7 @@ TEST(MacaroonBuilderTests, add_third_party_caveat) {
     macaroon_serialize(M3, MACAROON_V1, serialized, ser_sz, &err);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
     TEST_ASSERT_EQUAL_STRING_LEN_MESSAGE(ser_verify, serialized, strlen(ser_verify), "Serialized prefixes should match");
+    TEST_ASSERT_FALSE_MESSAGE(strcmp("MDAxY2xvY2F0aW9uIGh0dHA6Ly9teWJhbmsvCjAwMmNpZGVudGlmaWVyIHdlIHVzZWQgb3VyIG90aGVyIHNlY3JldCBrZXkKMDAxZGNpZCBhY2NvdW50ID0gMzczNTkyODU1OQowMDMwY2lkIHRoaXMgd2FzIGhvdyB3ZSByZW1pbmQgYXV0aCBvZiBrZXkvcHJlZAowMDUxdmlkIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANNuxQLgWIbR8CefBV-lJVTRbRbBsUB0u7g_8P3XncL-CY8O1KKwkRMOa120aiCoawowMDFiY2wgaHR0cDovL2F1dGgubXliYW5rLwowMDJmc2lnbmF0dXJlINJ9sv0fInYOTD2ugTfi2Pwd9sB0HBiu1LlyVr940fVcCg", serialized) == 0, "Nonce should change serialized value");
 }
 
 TEST(MacaroonBuilderTests, add_third_party_caveat_encoded) {
@@ -120,7 +121,7 @@ TEST(MacaroonBuilderTests, add_third_party_caveat_encoded) {
 
     struct macaroon* DP = macaroon_prepare_for_request(M, D, &err);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
-//    macaroon_destroy(D);
+    macaroon_destroy(D);
 
     struct macaroon_verifier* V = macaroon_verifier_create();
     macaroon_verifier_satisfy_exact(V, predicate, strlen(predicate), &err);
