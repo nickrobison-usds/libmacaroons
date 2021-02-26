@@ -2,6 +2,9 @@
 // Created by Nicholas Robison on 1/9/20.
 //
 
+// Ignore the fact that Windows wants us to use the secure CRT, which doesn't exist elsewhere.
+#define _CRT_SECURE_NO_WARNINGS
+
 /* C */
 #include <stdlib.h>
 #include <string.h>
