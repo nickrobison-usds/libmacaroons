@@ -39,8 +39,4 @@
 void
 explicit_bzero(void *buf, size_t len);
 
-void
-random_buf(void *buf, size_t len)
-{
-    arc4random_buf(buf, len);
-}
+
