@@ -30,4 +30,4 @@ jobs:
       - name: Test
         working-directory: ./build
         run: |
-          ctest
+          ctest --verbose

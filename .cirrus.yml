@@ -10,4 +10,4 @@ freebsd_task:
   build_script:
     - cd build
     - make -j2
-    - ctest
+    - ctest --verbose

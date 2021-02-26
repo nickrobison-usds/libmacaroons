@@ -19,58 +19,57 @@
 #pragma clang diagnostic ignored "-Wpointer-sign"
 TEST_GROUP(PrepareVerifyTests);
 
-const char* id = "we used our secret key";
-const char* secret = "this is our super secret key; only we should know it";
-const char* location = "http://mybank/";
-const char* loc2 = "http://auth.mybank/";
-const char* cav_key = "4; guaranteed random by a fair toss of the dice";
-const char* cav_id = "this was how we remind auth of key/pred";
-const char* cav = "account = 3735928559";
+const char *id = "we used our secret key";
+const char *secret = "this is our super secret key; only we should know it";
+const char *location = "http://mybank/";
+const char *loc2 = "http://auth.mybank/";
+const char *cav_key = "4; guaranteed random by a fair toss of the dice";
+const char *cav_id = "this was how we remind auth of key/pred";
+const char *cav = "account = 3735928559";
 
-struct macaroon* M;
+struct macaroon *M;
 
-bool prefix(const char *pre, const char *str)
-{
+bool prefix(const char *pre, const char *str) {
     return strncmp(pre, str, strlen(pre)) == 0;
 }
 
-time_t mk_time(const char* str) {
-    struct tm tm;
-    strptime(str, "%Y-%m-%dT%H:%M", &tm);
-    return mktime(&tm);
+time_t mk_time(const char *str) {
+    struct tm t = {0};
+    strptime(str, "%Y-%m-%dT%H:%M", &t);
+    return mktime(&t);
 }
 
-int verify_timestamp(const char* pred) {
-    const char* pre = "time";
+int verify_timestamp(const char *pred) {
+    const char *pre = "time";
 
     if (prefix(pre, pred)) {
         // Trim off the start
-        char* timestamp = malloc(sizeof(char*) * 16);
+        char *timestamp = malloc(sizeof(char *) * 16);
         strncpy(timestamp, &pred[7], 16);
         const time_t cav_time = mk_time(timestamp);
-        const time_t now = time(0);
-        const double t = difftime(cav_time, now);
+        const time_t now = time(NULL);
+        const double t = difftime(now, cav_time);
         return t < 0. ? 0 : -1;
     }
 
     return -1;
 }
 
-int general_cb(void* f, const unsigned char* pred, size_t pred_sz) {
-    char* to_verify = malloc((sizeof(char*) * pred_sz));
+int general_cb(void *f, const unsigned char *pred, size_t pred_sz) {
+    char *to_verify = malloc((sizeof(char *) * pred_sz));
 
     strncpy(to_verify, pred, pred_sz);
     to_verify[pred_sz] = '\0';
-    return ((int(*)(const unsigned char*))f)(to_verify);
+    return ((int (*)(const unsigned char *)) f)(to_verify);
 }
 
 TEST_SETUP(PrepareVerifyTests) {
 
     enum macaroon_returncode err = MACAROON_SUCCESS;
-    struct macaroon* M1 = macaroon_create(location, strlen(location), secret, strlen(secret), id, strlen(id), &err);
+    struct macaroon *M1 = macaroon_create(location, strlen(location), secret, strlen(secret), id, strlen(id), &err);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
 
-    struct macaroon* M2 = macaroon_add_first_party_caveat(M1, cav, strlen(cav), &err);
+    struct macaroon *M2 = macaroon_add_first_party_caveat(M1, cav, strlen(cav), &err);
     macaroon_destroy(M1);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
 
@@ -85,21 +84,22 @@ TEST_TEAR_DOWN(PrepareVerifyTests) {
 
 TEST(PrepareVerifyTests, prepare_request_verify_test_simple) {
     enum macaroon_returncode err = MACAROON_SUCCESS;
-    struct macaroon* M1 = macaroon_create(loc2, strlen(loc2), cav_key, strlen(cav_key), cav_id, strlen(cav_id), &err);
+    struct macaroon *M1 = macaroon_create(loc2, strlen(loc2), cav_key, strlen(cav_key), cav_id, strlen(cav_id), &err);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
 
-    const char* cav2 = "time < 2025-01-01T00:00";
-    struct macaroon* D = macaroon_add_first_party_caveat(M1, cav2, strlen(cav2), &err);
+    const char *cav2 = "time < 2025-01-01T00:00";
+    struct macaroon *D = macaroon_add_first_party_caveat(M1, cav2, strlen(cav2), &err);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
     macaroon_destroy(M1);
 
-    const unsigned char* sig;
+    const unsigned char *sig;
     size_t sig_sz = 0;
     macaroon_signature(D, &sig, &sig_sz);
-    char* hex = malloc(sizeof(char*) * sig_sz);
+    char *hex = malloc(sizeof(char *) * sig_sz);
     macaroon_bin2hex(sig, sig_sz, hex);
 
-    TEST_ASSERT_EQUAL_STRING_LEN_MESSAGE("b338d11fb136c4b95c86efe146f77978cd0947585375ba4d4da4ef68be2b3e8b", hex, sig_sz, "Signatures should be equal");
+    TEST_ASSERT_EQUAL_STRING_LEN_MESSAGE("b338d11fb136c4b95c86efe146f77978cd0947585375ba4d4da4ef68be2b3e8b", hex,
+                                         sig_sz, "Signatures should be equal");
 
     struct macaroon *DP = macaroon_prepare_for_request(M, D, &err);
     TEST_ASSERT_EQUAL(MACAROON_SUCCESS, err);
@@ -134,10 +134,10 @@ TEST(PrepareVerifyTests, prepare_request_verify_test_simple) {
     macaroon_verify(V3, M, secret, strlen(secret), NULL, 0, &err);
     TEST_ASSERT_EQUAL(MACAROON_NOT_AUTHORIZED, err);
     macaroon_verifier_destroy(V3);
-
 }
 
 TEST_GROUP_RUNNER(PrepareVerifyTests) {
     RUN_TEST_CASE(PrepareVerifyTests, prepare_request_verify_test_simple);
 }
+
 #pragma clang diagnostic pop

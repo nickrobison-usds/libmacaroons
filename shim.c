@@ -32,12 +32,11 @@
 
 /* C */
 #include <stdlib.h>
+#if HAVE_BSD_STDLIB_H
+#include <bsd/stdlib.h>
+#endif
 
 void
 explicit_bzero(void *buf, size_t len);
 
-__attribute__ ((visibility ("default")))
-void arc4random_buf(void * const buf, const size_t size)
-{
-    explicit_bzero(buf, size);
-}
+
