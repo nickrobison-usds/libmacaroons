@@ -31,7 +31,7 @@ target_include_directories(macaroons
         INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-target_link_libraries(macaroons PRIVATE utf8)
+set(MACAROON_TARGETS utf8)
 
 if (JSON_SUPPORT)
     message(STATUS "Enabling JSON support")
@@ -43,11 +43,14 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Linux")
     target_compile_definitions(macaroons PRIVATE HAVE_BSD_LIBUTIL_H)
     target_compile_definitions(macaroons PRIVATE HAVE_BSD_STDLIB_H)
+    list(APPEND MACAROON_TARGETS bsd)
 elseif (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
     target_compile_definitions(macaroons PRIVATE HAVE_LIBUTIL_H)
 else ()
     message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()
+
+target_link_libraries(macaroons PRIVATE ${MACAROON_TARGETS})
 
 # Test
 add_executable(serialize_test macaroon-test-serialization.c)
