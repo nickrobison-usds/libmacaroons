@@ -13,12 +13,15 @@
 #define FOR(i,n) for (i = 0;i < n;++i)
 #define sv static void
 
+void
+random_buf(void *buf, size_t len);
+
 typedef unsigned char u8;
 typedef unsigned long u32;
 typedef unsigned long long u64;
 typedef long long i64;
 typedef i64 gf[16];
-#define randombytes(X, Y) arc4random_buf((X), (Y))
+#define randombytes(X, Y) random_buf((X), (Y))
 
 static const u8
   _0[16],

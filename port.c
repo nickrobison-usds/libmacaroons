@@ -83,13 +83,13 @@ macaroon_memcmp(const void* data1, const void* data2, size_t data_sz)
 }
 
 void
-arc4random_buf(void *buf, size_t len);
+random_buf(void *buf, size_t len);
 
 int
 macaroon_randombytes(void* data, const size_t data_sz)
 {
     explicit_bzero(data, data_sz);
-    arc4random_buf(data, data_sz);
+    random_buf(data, data_sz);
     return 0;
 }
 
