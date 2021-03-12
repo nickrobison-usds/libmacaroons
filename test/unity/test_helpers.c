@@ -2,6 +2,9 @@
 // Created by Nicholas Robison on 1/9/20.
 //
 
+// Ignore the fact that Windows wants us to use the secure CRT, which doesn't exist elsewhere.
+#define _CRT_SECURE_NO_WARNINGS
+
 /* C */
 #include <stdlib.h>
 #include <string.h>
@@ -14,7 +17,7 @@
 
 size_t
 int2size_t(int val) {
-    return (val < 0) ? __SIZE_MAX__ : (size_t) ((unsigned) val);
+    return (val < 0) ? SIZE_MAX : (size_t) ((unsigned) val);
 }
 
 struct parsed_macaroon {
@@ -37,8 +40,10 @@ struct macaroon *deserialize_macaroon(const char *serialized) {
     unsigned char *buf = malloc(buf_sz);
     TEST_ASSERT_NOT_NULL_MESSAGE(buf, "Buffer cannot be null");
 
-//    memset(buf, 0, sizeof(*buf));
     int rc = b64_pton(serialized, buf, buf_sz);
+    if (rc < 0) {
+        TEST_FAIL_MESSAGE("Unable to decode Base64 data");
+    }
 
     enum macaroon_returncode err = MACAROON_SUCCESS;
     struct macaroon *M = macaroon_deserialize(buf, int2size_t(rc), &err);
